@@ -18,6 +18,9 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { CrudComponent } from './components/crud/crud.component';
+import { ServerService } from './shared/services/server.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -28,7 +31,8 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
     SignUpComponent,
     DashboardComponent,
     ForgotPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    CrudComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +42,9 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    HttpClientModule
     ],
-  providers: [AuthService],
+  providers: [AuthService, ServerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

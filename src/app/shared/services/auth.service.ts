@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, OnInit } from '@angular/core';
 import { User } from '../services/user';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -7,11 +7,12 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnInit {
   userData: any; // Save logged in user data
   // userData: User  = {
   //   uid: 'string',
@@ -21,6 +22,10 @@ export class AuthService {
   //   emailVerified: true,
   //   test : 'string'
   // }
+
+
+  //send userid for serverService than make post request using unique userId
+  userId = new Subject()
 
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
@@ -32,7 +37,9 @@ export class AuthService {
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        // this.userData = user;
+        this.userData = user;
+        this.userId.next(user);
+        sessionStorage.setItem('id', user.uid)
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
       } else {
@@ -40,6 +47,11 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user')!);
       }
     });
+  }
+
+  ngOnInit(): void {
+    // this.userId.next(user);
+
   }
 
   // Sign in with email/password
